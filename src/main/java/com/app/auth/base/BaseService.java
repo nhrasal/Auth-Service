@@ -39,7 +39,6 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
     @SuppressWarnings("unchecked")
     public AppResponse<List<D>> getAll() {
         List<E> results = repository.findAll();
-//        System.out.print(results);
         return AppResponse.build(HttpStatus.OK).body(convertForRead(results));
     }
 

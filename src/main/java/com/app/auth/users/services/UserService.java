@@ -43,15 +43,17 @@ public class UserService extends BaseService<User, UserDTO> {
     }
    
     
-    public User signup(SignupRequest requestData) {
+    public UserDTO signup(SignupRequest requestData) {
         // return requestData;
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setFirstName(requestData.getFirstName());
         user.setLastName(requestData.getLastName());
         user.setPhone(requestData.getPhone());
         user.setEmail(requestData.getEmail());
         user.setPassword(requestData.getPassword());
-        repository.save(user);
+        user.setIsActive(true);
+        user.setIsDeleted(false);
+        this.store(user);
         return user;
         // user.setUser
     }

@@ -10,11 +10,6 @@ import org.springframework.http.HttpStatus;
 
 
 
-/**
- * @Project core-service
- * @author Md. Nayeemul Islam
- * @Since Feb 07, 2023
- */
 
 @SuppressWarnings("serial")
 public class ServiceExceptionHolder {
