@@ -49,12 +49,11 @@ public class UserController {
     }
 
     @PostMapping("signup")
-    public UserDTO SignUp(@Valid @RequestBody SignupRequest requestData) {
-         return service.signup(requestData);
-        // try {
-        //     return service.signup(requestData);
-        // } catch (Exception ex) {
-        //     return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
-        // }
+    public AppResponse SignUp(@Valid @RequestBody SignupRequest requestData) {
+         try {
+             return service.signup(requestData);
+         } catch (Exception ex) {
+             return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
+         }
     }
 }

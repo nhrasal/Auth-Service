@@ -24,7 +24,7 @@ public class RoleService extends BaseService<Role, RoleDto> {
         super(repository,mapper);
         this.repository=repository;
         this.modelMapper=mapper;
-        this.storeSuperAdmin();
+//        this.storeSuperAdmin();
     }
 
     public void storeSuperAdmin(){
