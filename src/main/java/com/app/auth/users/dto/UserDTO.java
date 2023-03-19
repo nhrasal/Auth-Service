@@ -2,9 +2,12 @@ package com.app.auth.users.dto;
 
 import com.app.auth.base.dtos.BaseDTO;
 import com.app.auth.users.entitites.User;
+import com.app.auth.users.entitites.UserRole;
 import com.app.auth.validators.annotations.ValidEntityOid;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +44,8 @@ public class UserDTO extends BaseDTO {
 
     @NotNull
     private String password;
+
+    private List<UserRoleDto> roles;
 
 
     

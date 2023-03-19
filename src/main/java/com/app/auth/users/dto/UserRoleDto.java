@@ -22,7 +22,5 @@ import java.util.UUID;
 public class UserRoleDto extends BaseDTO {
     @ValidEntityOid(UserRole.class)
     private UUID id;
-
-    private User user;
-    private Role role;
+    private RoleDto role;
 }
