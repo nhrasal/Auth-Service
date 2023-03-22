@@ -23,7 +23,7 @@ public class SignupRequest {
 	@Email(message = "Email Address is must be email!")
 	public String email;
 	@NotNull(message = "Password is required!")
-	@Size(min = 10, max = 100, message = "The length of password must be between 2 and 100 characters.")
+	@Size(min = 8, max = 100, message = "The length of password must be between 8 and 100 characters.")
 	public String password;
 	
 }

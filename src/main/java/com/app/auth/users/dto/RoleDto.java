@@ -25,10 +25,10 @@ public class RoleDto extends BaseDTO {
     @NotNull
     private String title;
 
-    @NotNull
+//    @NotNull
     private String slug;
 
-    @NotNull
+//    @NotNull
     private String description;
 
 }
