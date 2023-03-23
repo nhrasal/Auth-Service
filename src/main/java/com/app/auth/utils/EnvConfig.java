@@ -1,4 +1,4 @@
-package com.app.auth.util;
+package com.app.auth.utils;
 
 public class EnvConfig {
 

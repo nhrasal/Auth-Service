@@ -6,18 +6,15 @@ import com.app.auth.users.dto.RoleDto;
 import com.app.auth.users.entitites.Role;
 import com.app.auth.users.repositories.RoleRepository;
 import com.app.auth.users.request.RoleRequest;
-import com.app.auth.util.UtilsService;
+import com.app.auth.utils.UtilsService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
 @Slf4j

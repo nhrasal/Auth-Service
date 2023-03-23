@@ -1,6 +1,4 @@
-package com.app.auth.util;
-
-import org.springframework.stereotype.Service;
+package com.app.auth.utils;
 
 import java.text.Normalizer;
 import java.util.Locale;
