@@ -1,8 +1,10 @@
 package com.app.auth.users.services;
 
 import com.app.auth.base.BaseService;
+import com.app.auth.constants.Constants;
+import com.app.auth.enums.VerificationType;
 import com.app.auth.response.AppResponse;
-import com.app.auth.users.dto.UserDTO;
+import com.app.auth.users.dto.UserDto;
 import com.app.auth.users.entitites.Role;
 import com.app.auth.users.entitites.User;
 import com.app.auth.users.entitites.UserRole;
@@ -18,13 +20,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @SuppressWarnings("unused")
 @Slf4j
 @Service
-public class UserService extends BaseService<User, UserDTO> {
+public class UserService extends BaseService<User, UserDto> {
 
     @Autowired
     private UserRepository repository;
@@ -33,8 +38,17 @@ public class UserService extends BaseService<User, UserDTO> {
     ModelMapper modelMapper;
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    VerificationService verificationService;
     @Autowired
     UserRoleRepository userRoleRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    AuthenticationManager authenticationManager;
+
 
     /**
      * @param repository
@@ -55,6 +69,7 @@ public class UserService extends BaseService<User, UserDTO> {
     @Transactional
     public AppResponse signup(SignupRequest requestData) {
 
+
         if (requestData.getEmail().trim().isEmpty()) {
             return AppResponse.build(HttpStatus.NOT_ACCEPTABLE).message("First name is required!");
         }
@@ -62,27 +77,39 @@ public class UserService extends BaseService<User, UserDTO> {
         Optional<User> findUser = repository.findByEmail(requestData.getEmail());
         if (findUser.isPresent())
             return AppResponse.build(HttpStatus.CONFLICT).message("This email address already exist!");
-        User user = new User();
-        user.setFirstName(requestData.getFirstName().trim());
-        user.setLastName(requestData.getLastName().trim());
-        user.setPhone(requestData.getPhone().trim());
-        user.setEmail(requestData.getEmail().trim());
-        user.setPassword(requestData.getPassword().trim());
-        user.setIsActive(true);
-        user.setIsDeleted(false);
-        User storeUser = repository.save(user);
 
-        if (storeUser.getId() != null) {
-            Optional<Role> role = roleService.findBySlug("super-admin");
-            if (role.isPresent()) {
-                UserRole userRole = new UserRole();
-                userRole.setUser(storeUser);
-                userRole.setRole(role.get());
-                UserRole usrRole=userRoleRepository.save(userRole);
+        try {
+            User user = new User();
+            user.setFirstName(requestData.getFirstName().trim());
+            user.setLastName(requestData.getLastName().trim());
+            user.setPhone(requestData.getPhone().trim());
+            user.setEmail(requestData.getEmail().trim());
+            user.setPassword(passwordEncoder.encode(requestData.getPassword().trim()));
+            user.setIsActive(true);
+            user.setIsDeleted(false);
+            User storeUser = repository.save(user);
+
+            if (storeUser.getId() != null) {
+                Optional<Role> role = roleService.findBySlug("super-admin");
+                if (role.isPresent()) {
+                    UserRole userRole = new UserRole();
+                    userRole.setUser(storeUser);
+                    userRole.setRole(role.get());
+                    UserRole usrRole = userRoleRepository.save(userRole);
+                }
+
+                verificationService.storeVerification(storeUser, "Account verification", String.valueOf(Constants.ACCOUNT_VERIFICATION));
                 return AppResponse.build(HttpStatus.OK).body(storeUser).message("Registration has been completed successfully");
+
             }
+            return AppResponse.build(HttpStatus.BAD_REQUEST).message("Registration failed!");
+        } catch (Exception ex) {
+
+            return AppResponse.build(HttpStatus.BAD_REQUEST).body(ex).message("failed");
         }
-        return AppResponse.build(HttpStatus.BAD_REQUEST).message("Registration failed!");
+
 
     }
+
+
 }

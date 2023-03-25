@@ -2,7 +2,8 @@ package com.app.auth.constants;
 
 
 public interface Constants {
-    
+    String ACCOUNT_VERIFICATION="ACCOUNT_VERIFICATION";
+    String ACCOUNT_FORGOT="ACCOUNT_FORGOT";
 
     String SAVE_SUCCESS = "Successfully saved";
     String SAVE_FAILED = "Failed to save data.";
