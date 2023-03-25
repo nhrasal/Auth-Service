@@ -1,6 +1,6 @@
 package com.app.auth.configuration;
 
-import com.app.auth.token.TokenRepository;
+import com.app.auth.base.redis.RedisRepo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
 
-  private final TokenRepository tokenRepository;
+  private final RedisRepo redisRepo;
+  private final JwtService jwtService;
 
   @Override
   public void logout(
@@ -27,12 +28,14 @@ public class LogoutService implements LogoutHandler {
       return;
     }
     jwt = authHeader.substring(7);
-    var storedToken = tokenRepository.findByToken(jwt)
-        .orElse(null);
+    String userEmail = jwtService.extractUsername(jwt);
+
+    var storedToken = redisRepo.getValue(userEmail);
+
     if (storedToken != null) {
-      storedToken.setExpired(true);
-      storedToken.setRevoked(true);
-      tokenRepository.save(storedToken);
+//      storedToken.setExpired(true);
+//      storedToken.setRevoked(true);
+//      tokenRepository.save(storedToken);
       SecurityContextHolder.clearContext();
     }
   }

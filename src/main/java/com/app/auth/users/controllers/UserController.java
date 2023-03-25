@@ -1,23 +1,20 @@
 package com.app.auth.users.controllers;
 
-import javax.validation.Valid;
-
+import com.app.auth.response.AppResponse;
 import com.app.auth.users.request.RoleRequest;
 import com.app.auth.users.services.RoleService;
+import com.app.auth.users.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import com.app.auth.response.AppResponse;
-import com.app.auth.users.services.UserService;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
-
+import javax.validation.Valid;
 import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Tag(name = "User Controller")
 @RequiredArgsConstructor
 
@@ -25,11 +22,7 @@ public class UserController {
 
     public final UserService service;
     public final RoleService roleService;
-//    @Autowired
-//    UserService service;
-//
-//    @Autowired
-//    RoleService roleService;
+
 
     @GetMapping
     public AppResponse getAllUser() {

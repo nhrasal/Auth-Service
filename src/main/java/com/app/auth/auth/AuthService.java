@@ -4,7 +4,6 @@ import com.app.auth.auth.dto.ForgotPassword;
 import com.app.auth.auth.dto.Login;
 import com.app.auth.auth.dto.OTPVerification;
 import com.app.auth.auth.dto.ResetPassword;
-import com.app.auth.base.email.EmailDto;
 import com.app.auth.base.email.EmailService;
 import com.app.auth.base.redis.RedisRepo;
 import com.app.auth.configuration.JwtService;
@@ -59,11 +58,8 @@ public class AuthService {
             body.put("phone", user.get().getPhone());
             body.put("userId", user.get().getId().toString());
 
-            EmailDto email = EmailDto.builder().subject("test").messageBody("test").recipient("nhrasal.cse@gmail.com").build();
-            emailService.send(email);
-
             var accessToken = jwtService.generateToken(user.get().getEmail());
-            redisRepo.setValue(user.get().getEmail(), accessToken, 60);
+            redisRepo.setValue(user.get().getEmail(), accessToken);
 
             Map<String, String> header = new HashMap<>();
             header.put("accessToken", accessToken);
