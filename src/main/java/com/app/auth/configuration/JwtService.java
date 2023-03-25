@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +29,18 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+  public String generateToken(String userEmail) {
+    return generateToken(new HashMap<>(), userEmail);
   }
 
   public String generateToken(
       Map<String, Object> extraClaims,
-      UserDetails userDetails
+      String userEmail
   ) {
     return Jwts
         .builder()
         .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
+        .setSubject(userEmail)
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256)
