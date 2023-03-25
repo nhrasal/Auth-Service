@@ -4,16 +4,16 @@ import com.app.auth.auth.dto.ForgotPassword;
 import com.app.auth.auth.dto.Login;
 import com.app.auth.auth.dto.OTPVerification;
 import com.app.auth.auth.dto.ResetPassword;
+import com.app.auth.base.email.EmailDto;
+import com.app.auth.base.email.EmailService;
 import com.app.auth.base.redis.RedisRepo;
 import com.app.auth.configuration.JwtService;
 import com.app.auth.response.AppResponse;
 import com.app.auth.users.entitites.User;
-import com.app.auth.users.repositories.RoleRepository;
 import com.app.auth.users.repositories.UserRepository;
 import com.app.auth.users.repositories.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +32,8 @@ public class AuthService {
     private final JwtService jwtService;
 
     private final RedisRepo redisRepo;
+
+    private final EmailService emailService;
 
     public AppResponse login(Login login) {
 
@@ -52,13 +54,13 @@ public class AuthService {
 
             Map<String, String> body = new HashMap<>();
             body.put("email", user.get().getEmail());
-            body.put("firstName",user.get().getFirstName());
-            body.put("lasName",user.get().getLastName());
-            body.put("phone",user.get().getPhone());
-            body.put("userId",user.get().getId().toString());
+            body.put("firstName", user.get().getFirstName());
+            body.put("lasName", user.get().getLastName());
+            body.put("phone", user.get().getPhone());
+            body.put("userId", user.get().getId().toString());
 
-
-
+            EmailDto email = EmailDto.builder().subject("test").messageBody("test").recipient("nhrasal.cse@gmail.com").build();
+            emailService.send(email);
 
             var accessToken = jwtService.generateToken(user.get().getEmail());
             redisRepo.setValue(user.get().getEmail(), accessToken, 60);
