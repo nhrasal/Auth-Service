@@ -2,15 +2,15 @@ package com.app.auth.constants;
 
 
 public interface Constants {
-    String ACCOUNT_VERIFICATION="ACCOUNT_VERIFICATION";
-    String ACCOUNT_FORGOT="ACCOUNT_FORGOT";
+    String ACCOUNT_VERIFICATION = "ACCOUNT_VERIFICATION";
+    String ACCOUNT_FORGOT = "ACCOUNT_FORGOT";
 
     String SAVE_SUCCESS = "Successfully saved";
     String SAVE_FAILED = "Failed to save data.";
-	String UPDATE_SUCCESS = "Successfully updated";
-	String UPDATE_FAILED = "Failed to update data";
-	String DELETE_SUCCESS = "Successfully deleted";
-	String DELETE_FAILED = "Failed to deleted data.";
+    String UPDATE_SUCCESS = "Successfully updated";
+    String UPDATE_FAILED = "Failed to update data";
+    String DELETE_SUCCESS = "Successfully deleted";
+    String DELETE_FAILED = "Failed to deleted data.";
     String ADD_SUCCESS = "Successfully added";
     String REMOVE_SUCCESS = "Successfully removed";
     String UPLOAD_SUCCESS = "Successfully uploaded";
@@ -27,20 +27,9 @@ public interface Constants {
     String NOT_AVAILABLE = "Not available.";
     String ALREADY_EXIST = "Already exist.";
 
-    String DEFAULT_API_KEY = "fe95ff61-ce79-4a53-be55-8db0fe31d21e";
-    String DEFAULT_API_SEC = "16fdbd8f@1e45&4390.8081$1e2aafd68627%8db0fe31d21e";
+
+    String DATA_ALRADY_EXISTS_MESSAGE = "Data already exists!!";
+    String CHILD_RECORD_FOUND = "Child record found !!";
 
 
-
-	String DATA_ALRADY_EXISTS_MESSAGE = "Data already exists!!";
-	String CHILD_RECORD_FOUND = "Child record found !!";
-	String PROCESS_COMPLETE = "Process successfully completed !!";
-	
-	
-	String DELIVERY_ADDRESS = "delivery";
-	String BILLING_ADDRESS = "billing";
-	
-	String SMS = "sms";
-	String EMAIL = "email";
-	String FACEBOOK = "facebook";
 }

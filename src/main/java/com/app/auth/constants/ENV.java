@@ -24,22 +24,11 @@ public class ENV {
     public static final String LOGIN_BLOCK_DURATION_IN_MIN = "LOGIN_BLOCK_DURATION_IN_MIN";
     public static final String ALLOWED_MAX_FAILED_LOGIN = "ALLOWED_MAX_FAILED_LOGIN";
     public static final String DEFAULT_SUPERADMIN_TOKEN = "b293a2f11b659e1d71ce6fca9a09e3bc72df84f432e0c8114c57ad69bbd08a4cSuperadmin";
-    public static final String DEFAULT_MERCHANT_TOKEN = "b293a2f11b659e1d71ce6fca9a09e3bc72df84f432e0c8114c57ad69bbd08a4cMerchant";
-    public static final String DEFAULT_CUSTOMER_TOKEN = "b293a2f11b659e1d71ce6fca9a09e3bc72df84f432e0c8114c57ad69bbd08a4cCustomer";
 
-    public static class PATH{
-        public static final String MERCHANT_HOME = "/home/merchant";
-        public static final String CONF_PATH = "/home/cnf";
-        public static final String APP_SRC_PATH = "/home/apps_store";
-        public static final String THEME_SRC_PATH = "/home/themes_store";
-    }
+
 
     public static class BUCKET{
-        public static final String APP_ICON_PATH = "WEBXPPICONPATH";
-        public static final String APP_SCREENSHOT_PATH = "WEBXAPPSCREENSHOTPATH";
 
-        public static final String THEME_ICON_PATH = "WEBXTHEMEICONPATH";
-        public static final String THEME_SCREENSHOT_PATH = "WEBXTHEMESCREENSHOTPATH";
     }
 
     public static class DB{
