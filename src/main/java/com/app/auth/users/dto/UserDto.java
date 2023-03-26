@@ -5,13 +5,13 @@ import com.app.auth.users.entitites.User;
 import com.app.auth.validators.annotations.ValidEntityOid;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 
 
@@ -43,6 +43,8 @@ public class UserDto extends BaseDTO {
 
     @NotNull
     private String password;
+
+    private Boolean isVerified;
 
     private List<UserRoleDto> roles;
 

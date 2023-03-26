@@ -8,14 +8,22 @@ import com.app.auth.base.email.EmailService;
 import com.app.auth.base.redis.RedisRepo;
 import com.app.auth.configuration.JwtService;
 import com.app.auth.response.AppResponse;
+import com.app.auth.users.dto.UserDto;
+import com.app.auth.users.dto.VerificationDto;
 import com.app.auth.users.entitites.User;
+import com.app.auth.users.entitites.Verification;
 import com.app.auth.users.repositories.UserRepository;
 import com.app.auth.users.repositories.UserRoleRepository;
+import com.app.auth.users.repositories.VerificationRepository;
+import com.app.auth.users.services.UserService;
+import com.app.auth.users.services.VerificationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +32,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepo;
+    private final UserService userService;
+    private final VerificationService verificationService;
     private final UserRoleRepository userRoleRepo;
 
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +43,7 @@ public class AuthService {
     private final RedisRepo redisRepo;
 
     private final EmailService emailService;
+    private final VerificationRepository verificationRepository;
 
     public AppResponse login(Login login) {
 
@@ -75,6 +86,40 @@ public class AuthService {
 
     public AppResponse forgotPassword(ForgotPassword forgotPassword) {
         return AppResponse.build(HttpStatus.NOT_FOUND).message("Currently this method is not work");
+    }
+
+    @Transactional
+    public AppResponse accountVerification(String token) {
+
+        Optional<Verification> findVerification = verificationRepository.findByTokenAndIsActive(token, true);
+
+        if (findVerification.isEmpty())
+            return AppResponse.build(HttpStatus.NOT_FOUND).message("Verification token not found");
+
+        if (findVerification.get().getIsVerified())
+            return AppResponse.build(HttpStatus.UNAUTHORIZED).message("This Verification link already verified!");
+
+        if (findVerification.get().getExpireAt().before(new Date()))
+            return AppResponse.build(HttpStatus.BAD_REQUEST).message("This link already expired!");
+
+        if (findVerification.get().getUser().getIsVerified())
+            return AppResponse.build(HttpStatus.BAD_REQUEST).message("Account already verified!");
+
+        UserDto user = new UserDto();
+        user.setId(findVerification.get().getUser().getId());
+        user.setIsVerified(true);
+        user.setIsActive(true);
+        UserDto u = userService.update(user);
+
+        if (u.getId() != null) {
+            VerificationDto verification = new VerificationDto();
+            verification.setId(findVerification.get().getId());
+            verification.setIsVerified(true);
+            verificationService.update(verification);
+        }
+        return AppResponse.build(HttpStatus.BAD_REQUEST).message("Account Verification successfully!");
+
+
     }
 
     public AppResponse otpVerification(OTPVerification otpVerification) {

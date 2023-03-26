@@ -36,6 +36,6 @@ public class Verification extends BaseEntity {
     @Column()
     String token;
 
-    @Column()
+    @Column(columnDefinition = "boolean default false", nullable = false)
     Boolean isVerified = false;
 }

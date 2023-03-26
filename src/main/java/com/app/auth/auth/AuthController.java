@@ -10,10 +10,7 @@ import com.app.auth.users.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -47,6 +44,15 @@ public class AuthController {
     public AppResponse forgotPassword(@Valid @RequestBody ForgotPassword forgotPassword) {
         try {
             return service.forgotPassword(forgotPassword);
+        } catch (Exception ex) {
+            return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
+        }
+    }
+
+    @GetMapping("account-verification")
+    public AppResponse accountVerification(@RequestParam String token){
+        try {
+            return service.accountVerification(token);
         } catch (Exception ex) {
             return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
         }
