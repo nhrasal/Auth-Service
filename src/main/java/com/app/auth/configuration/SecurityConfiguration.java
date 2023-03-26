@@ -19,6 +19,7 @@ public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final AuthEntryPointJwt unauthorizedHandler;
     private final LogoutHandler logoutHandler;
 
     @Bean
@@ -26,6 +27,9 @@ public class SecurityConfiguration {
         http
                 .csrf()
                 .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/api-docs/**","/swagger-ui/**","/auth/**", "/public/**" )
