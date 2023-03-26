@@ -2,7 +2,6 @@ package com.app.auth.users.services;
 
 import com.app.auth.base.BaseService;
 import com.app.auth.constants.Constants;
-import com.app.auth.enums.VerificationType;
 import com.app.auth.response.AppResponse;
 import com.app.auth.users.dto.UserDto;
 import com.app.auth.users.entitites.Role;
@@ -11,19 +10,17 @@ import com.app.auth.users.entitites.UserRole;
 import com.app.auth.users.repositories.UserRepository;
 import com.app.auth.users.repositories.UserRoleRepository;
 import com.app.auth.users.request.SignupRequest;
-
-import java.util.List;
-import java.util.Optional;
-
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @SuppressWarnings("unused")
@@ -110,6 +107,8 @@ public class UserService extends BaseService<User, UserDto> {
 
 
     }
+
+
 
 
 }
