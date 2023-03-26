@@ -11,6 +11,7 @@ import com.app.auth.utils.UtilsService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class VerificationService extends BaseService<Verification, VerificationD
 
     @Autowired
     EmailService emailService;
+
+    @Value("${spring.baseUrl}")
+    private String baseUrl;
 
     public VerificationService(VerificationRepository repository, ModelMapper modelMapper) {
         super(repository, modelMapper);
@@ -53,12 +57,13 @@ public class VerificationService extends BaseService<Verification, VerificationD
 
     }
 
+//    Account verification mail throw
     private void sendVerification(String email, String token) {
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("title", "Account Verification");
         properties.put("message", "");
-        properties.put("url", "http://localhost:9080/api/v1/auth/account-verification?token=" + token);
+        properties.put("url", baseUrl + "auth/account-verification?token=" + token);
 
         EmailDto dto = EmailDto.builder()
                 .subject("Account Verification")
