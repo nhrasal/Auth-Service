@@ -39,6 +39,14 @@ public class AuthController {
         }
     }
 
+    @GetMapping("account-verification")
+    public AppResponse accountVerification(@RequestParam String token){
+        try {
+            return service.accountVerification(token);
+        } catch (Exception ex) {
+            return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
+        }
+    }
     @PostMapping("forgot-password")
     public AppResponse forgotPassword(@Valid @RequestBody ForgotPassword forgotPassword) {
         try {
@@ -48,14 +56,6 @@ public class AuthController {
         }
     }
 
-    @GetMapping("account-verification")
-    public AppResponse accountVerification(@RequestParam String token){
-        try {
-            return service.accountVerification(token);
-        } catch (Exception ex) {
-            return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
-        }
-    }
  @GetMapping("forgot-verification")
     public AppResponse forgotVerification(@RequestParam String token){
         try {
