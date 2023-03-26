@@ -2,7 +2,6 @@ package com.app.auth.auth;
 
 import com.app.auth.auth.dto.ForgotPassword;
 import com.app.auth.auth.dto.Login;
-import com.app.auth.auth.dto.OTPVerification;
 import com.app.auth.auth.dto.ResetPassword;
 import com.app.auth.response.AppResponse;
 import com.app.auth.users.request.SignupRequest;
@@ -57,20 +56,28 @@ public class AuthController {
             return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
         }
     }
-
-    @PostMapping("otp-verification")
-    public AppResponse otpVerification(@Valid @RequestBody OTPVerification otpVerification) {
+ @GetMapping("forgot-verification")
+    public AppResponse forgotVerification(@RequestParam String token){
         try {
-            return service.otpVerification(otpVerification);
+            return service.forgotVerification(token);
         } catch (Exception ex) {
             return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
         }
     }
 
+//    @PostMapping("otp-verification")
+//    public AppResponse otpVerification(@Valid @RequestBody OTPVerification otpVerification) {
+//        try {
+//            return service.otpVerification(otpVerification);
+//        } catch (Exception ex) {
+//            return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
+//        }
+//    }
+
     @PostMapping("reset-password")
-    public AppResponse resetPassword(@Valid @RequestBody ResetPassword resetPassword) {
+    public AppResponse resetPassword(@RequestHeader("passwordToken") String passwordToken, @Valid @RequestBody ResetPassword resetPassword) {
         try {
-            return service.resetPassword(resetPassword);
+            return service.resetPassword(resetPassword,passwordToken);
         } catch (Exception ex) {
             return AppResponse.build(HttpStatus.INTERNAL_SERVER_ERROR).message(ex.getMessage());
         }

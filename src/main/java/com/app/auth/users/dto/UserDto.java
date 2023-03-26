@@ -45,6 +45,7 @@ public class UserDto extends BaseDTO {
     private String password;
 
     private Boolean isVerified;
+    private String passwordResetToken;
 
     private List<UserRoleDto> roles;
 

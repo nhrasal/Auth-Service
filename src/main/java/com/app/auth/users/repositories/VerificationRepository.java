@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface VerificationRepository extends BaseRepository<Verification> {
     Optional<Verification> findByUserAndIsVerified(User user, Boolean isVerified);
+    Optional<Verification> findFirstByUserAndTypeOrderByCreatedOnDesc(User user,String type);
 
     Optional<Verification>findByTokenAndIsActive(String token,Boolean isActive);
 }

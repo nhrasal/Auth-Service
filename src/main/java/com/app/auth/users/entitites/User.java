@@ -10,9 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -46,7 +44,11 @@ public class User extends BaseEntity implements UserDetails {
     @Column(length = 100, nullable = true)
     private String image;
 
-    @Column()
+    @Column(length = 100, nullable = true)
+    private String passwordResetToken;
+
+
+    @Column(nullable = false)
     private Boolean isVerified=false;
 
     @OneToMany(mappedBy = "user")
