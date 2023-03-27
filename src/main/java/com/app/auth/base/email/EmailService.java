@@ -13,7 +13,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class EmailService {
+public class EmailService extends Thread {
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -23,29 +23,21 @@ public class EmailService {
     @Value("${spring.mail.sender}")
     private String sender;
 
+
     public void send(EmailDto dto) {
 
         // Try block to check for exceptions
         try {
 
             // Creating a simple mail message
-            SimpleMailMessage mailMessage
-                    = new SimpleMailMessage();
-
-            // Setting up necessary details
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(sender);
             mailMessage.setTo(dto.getRecipient());
             mailMessage.setText(dto.getMessageBody());
             mailMessage.setSubject(dto.getSubject());
-
-//            mailMessage.setCc(dto.css);
-
             javaMailSender.send(mailMessage);
             System.out.println("Mail Sent Successfully...");
-//            return "Mail Sent Successfully...";
-        }
-        // Catch block to handle the exceptions
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
@@ -54,9 +46,11 @@ public class EmailService {
     public void sendEmail(EmailDto mail) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
+
             MimeMessageHelper helper = new MimeMessageHelper(message,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
+
             Context context = new Context();
             context.setVariables(mail.getProps());
 
@@ -68,7 +62,8 @@ public class EmailService {
             javaMailSender.send(message);
             System.out.println("email send successfully");
         } catch (Exception ex) {
-            System.out.println("Email send failed ::"+ex.toString());
+            System.out.println("Email send failed ::" + ex.getMessage());
         }
     }
+
 }

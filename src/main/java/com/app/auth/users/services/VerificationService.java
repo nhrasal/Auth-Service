@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -43,6 +45,7 @@ public class VerificationService extends BaseService<Verification, VerificationD
         this.modelMapper = modelMapper;
     }
 
+
     public void storeVerification(User dto, String msg, String type) {
         String token = passwordEncoder.encode(dto.getEmail());
         VerificationDto data = new VerificationDto();
@@ -56,20 +59,34 @@ public class VerificationService extends BaseService<Verification, VerificationD
         data.setIsDeleted(false);
         data.setIsVerified(false);
         VerificationDto store = this.store(data);
-        if (Objects.equals(type, Constants.ACCOUNT_VERIFICATION))
-            this.sendVerification(dto.getEmail(), token);
-        else if (Objects.equals(type, Constants.ACCOUNT_FORGOT))
-            this.sendForgotPassword(dto.getEmail(), token);
+        // inside your getSalesUserData() method
+        ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+        emailExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (Objects.equals(type, Constants.ACCOUNT_VERIFICATION))
+                        sendVerification(dto.getEmail(), token);
+                    else if (Objects.equals(type, Constants.ACCOUNT_FORGOT))
+                        sendForgotPassword(dto.getEmail(), token);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+//                    logger.error("failed", e);
+                }
+            }
+        });
+        emailExecutor.shutdown(); // it is very important to shutdown your non-singleton ExecutorService.
 
 
     }
+
 
     //    Account verification mail throw
     private void sendVerification(String email, String token) {
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("title", "Account Verification");
-        properties.put("message", "");
+        properties.put("message", "please click on the following link to verify your account:");
         properties.put("url", baseUrl + "auth/account-verification?token=" + token);
 
         EmailDto dto = EmailDto.builder()
@@ -87,8 +104,8 @@ public class VerificationService extends BaseService<Verification, VerificationD
     private void sendForgotPassword(String email, String token) {
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("title", "Account Verification");
-        properties.put("message", "");
+        properties.put("title", "Forgot Password");
+        properties.put("message", "please click on the following link to verify for reset password:");
         properties.put("url", baseUrl + "auth/forgot-verification?token=" + token);
 
         EmailDto dto = EmailDto.builder()
