@@ -27,9 +27,9 @@ public class SecurityConfiguration {
         http
                 .csrf()
                 .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(unauthorizedHandler)
+//                .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/api-docs/**","/swagger-ui/**","/auth/**", "/public/**" )

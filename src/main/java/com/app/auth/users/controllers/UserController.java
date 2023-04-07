@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/users")
 @Tag(name = "User Controller")
 @RequiredArgsConstructor
-
 public class UserController {
 
     public final UserService service;

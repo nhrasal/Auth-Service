@@ -1,11 +1,13 @@
 package com.app.auth.base;
 
-import java.lang.reflect.ParameterizedType;
-//import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.app.auth.base.dtos.IdHolderRequestBodyDTO;
+import com.app.auth.exceptions.ServiceExceptionHolder;
+import com.app.auth.response.AppResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -14,14 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import com.app.auth.base.dtos.IdHolderRequestBodyDTO;
-import com.app.auth.exceptions.ServiceExceptionHolder;
-import com.app.auth.response.AppResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.reflect.ParameterizedType;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -42,6 +39,11 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
     @SuppressWarnings("unchecked")
     public AppResponse<List<D>> getAll() {
         List<E> results = repository.findAll();
+        return AppResponse.build(HttpStatus.OK).body(convertForRead(results));
+    }
+
+    public AppResponse<D> findSingle(UUID id) {
+        E results = getEntityById(id);
         return AppResponse.build(HttpStatus.OK).body(convertForRead(results));
     }
 
@@ -91,7 +93,8 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
         } catch (InstantiationException | IllegalAccessException ex) {
             ex.printStackTrace();
         }
-        BeanUtils.copyProperties(d, e);
+        BeanUtils.copyProperties(d, e, getNullPropertyNames(d));
+//        copyNonNullProperties(d, e);
         return e;
     }
 
@@ -104,8 +107,7 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
         return true;
     }
 
-//Create or store end
-
+    //Create or store end
 
     protected E putBaseEntityDetailsForUpdate(E entity) {
 //        entity.setUpdatedBy(getLoggedInUserId());
@@ -152,7 +154,6 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
 
     protected E convertForUpdate(D d, E e) {
         copyNonNullProperties(d, e);
-        //BeanUtils.copyProperties(d, e);
         return e;
     }
 
@@ -166,7 +167,6 @@ public abstract class BaseService<E extends BaseEntity, D extends IdHolderReques
     //end update
 
     //    start delete
-
 
 
     public D delete(E entity) {

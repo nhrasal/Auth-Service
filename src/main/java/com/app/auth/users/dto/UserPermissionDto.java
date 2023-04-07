@@ -1,11 +1,9 @@
 package com.app.auth.users.dto;
 
-
 import com.app.auth.base.dtos.BaseDTO;
-import com.app.auth.users.entitites.Role;
+import com.app.auth.users.entitites.UserRole;
 import com.app.auth.validators.annotations.ValidEntityOid;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,12 +16,12 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RoleDto extends BaseDTO {
-    @ValidEntityOid(Role.class)
+public class UserPermissionDto extends BaseDTO {
+    @ValidEntityOid(UserRole.class)
     private UUID id;
-    @NotNull
-    private String title;
-    private String slug;
-    private String description;
 
+    private UserDto user;
+    private PermissionDto permission;
+
+    private Boolean hasPermitted;
 }

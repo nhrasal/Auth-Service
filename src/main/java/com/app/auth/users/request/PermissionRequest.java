@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleRequest {
+public class PermissionRequest {
     @NotNull(message = "Title is required!")
     private String title;
 

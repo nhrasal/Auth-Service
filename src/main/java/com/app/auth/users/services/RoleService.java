@@ -24,10 +24,6 @@ public class RoleService extends BaseService<Role, RoleDto> {
     RoleRepository repository;
     @Autowired
     ModelMapper modelMapper;
-//    @Autowired
-//    UtilsService utilsService;
-
-
     public RoleService(RoleRepository repository, ModelMapper mapper) {
         super(repository, mapper);
         this.repository = repository;

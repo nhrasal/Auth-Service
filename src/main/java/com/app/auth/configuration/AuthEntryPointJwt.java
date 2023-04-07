@@ -21,11 +21,10 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-//        LOG.error("Unauthorized error: {}", authException.getMessage());
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write("{\"status\": 401, \"body\": null, \"message\": \"Token expired.\"}");
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-//        return AppResponse.build(HttpStatus.UNAUTHORIZED).message("Unauthorized request");
     }
 
 }
