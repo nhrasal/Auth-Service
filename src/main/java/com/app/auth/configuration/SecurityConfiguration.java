@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/api-docs/**","/swagger-ui/**","/auth/**", "/public/**" )
+                        "/api-docs/**", "/swagger-ui/**", "/auth/**", "/public/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

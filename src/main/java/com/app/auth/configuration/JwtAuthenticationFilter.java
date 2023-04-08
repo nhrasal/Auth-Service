@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -65,12 +66,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-//      log.error("!!! Unauthorized access.");
-//      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//      response.getWriter().write("{\"status\": 401, \"body\": null, \"message\": \"Token expired.\"}");
-//      return;
-
-
         filterChain.doFilter(request, response);
     }
 }

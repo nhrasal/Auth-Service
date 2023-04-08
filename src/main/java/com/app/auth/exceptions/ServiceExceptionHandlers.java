@@ -1,8 +1,6 @@
 package com.app.auth.exceptions;
 
 import com.app.auth.response.AppResponse;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,17 +15,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-
-/**
- * @Project core-service
- * @author Md. Nayeemul Islam
- * @Since Feb 07, 2023
- */
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ServiceExceptionHandlers {
+    @ExceptionHandler(RouteNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public AppResponse handleRouteNotFoundException(RouteNotFoundException ex) {
+        return AppResponse.build(HttpStatus.NOT_FOUND).message(ex.getMessage());
+    }
 
     @ExceptionHandler(ServiceExceptionHolder.ResourceNotFoundException.class)
     public AppResponse handleUserNotFoundException(final ServiceExceptionHolder.ResourceNotFoundException ex) {

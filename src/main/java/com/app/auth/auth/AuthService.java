@@ -210,4 +210,5 @@ public class AuthService {
 
         return AppResponse.build(HttpStatus.CREATED).message("Password reset successfully, try to login");
     }
+
 }
